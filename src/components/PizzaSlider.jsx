@@ -89,6 +89,34 @@ export default function PizzaSlider() {
 
   return (
     <div className="mt-auto flex w-full flex-col items-center">
+      {/* Caption — swaps at the same moment the incoming pie lands, because
+          `current` only advances once the transition has finished. */}
+      <div
+        key={pizza.id}
+        className="pizza-caption mb-[clamp(1rem,3vh,2.25rem)] flex flex-col items-center px-4 text-center"
+      >
+        <span className="text-[11px] font-medium uppercase tracking-[0.28em] text-[var(--ink-soft)]">
+          Wood-fired &amp; fresh daily
+        </span>
+
+        <h1 className="font-display mt-3 text-[clamp(1.9rem,5.5vw,3.4rem)] font-semibold leading-[1.05] tracking-tight text-[var(--ink)]">
+          {pizza.name.split(' ').slice(0, -1).join(' ')}{' '}
+          <em className="italic text-[var(--accent)]">{pizza.name.split(' ').slice(-1)}</em>
+        </h1>
+
+        <p className="mt-3 max-w-[34ch] text-sm text-[var(--ink-soft)] sm:text-[0.95rem]">
+          {pizza.blurb}
+        </p>
+
+        <div className="mt-4 flex items-center gap-3 text-[13px] font-medium text-[var(--ink-soft)]">
+          <span>{pizza.size}</span>
+          <span className="size-1 rounded-full bg-[var(--line)]" aria-hidden="true" />
+          <span>{pizza.slices}</span>
+          <span className="size-1 rounded-full bg-[var(--line)]" aria-hidden="true" />
+          <span className="text-[var(--accent)]">{pizza.price}</span>
+        </div>
+      </div>
+
       <div className="flex w-full max-w-full items-end justify-center gap-[clamp(0.25rem,4vw,3.5rem)]">
         <button
           type="button"

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { CartIcon, UserIcon } from './components/Icons'
 import PizzaSlider from './components/PizzaSlider'
 
@@ -17,6 +18,10 @@ const floaters = [
 const links = ['Home', 'Menu', 'Contact']
 
 export default function App() {
+  const [active, setActive] = useState(links[0])
+  const [accountOpen, setAccountOpen] = useState(false)
+  const [cart, setCart] = useState(1)
+
   return (
     <div className="stage flex h-dvh w-full flex-col overflow-hidden bg-[var(--bg)]">
       <nav className="relative z-20 flex w-full items-center justify-between px-6 py-5 sm:px-10">
@@ -24,34 +29,55 @@ export default function App() {
           Slice&amp;Co
         </span>
 
-        <div className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
-            <a
-              key={l}
-              href="#"
-              className="text-sm font-medium text-[var(--ink)] transition hover:text-[var(--accent)]"
-            >
-              {l}
-            </a>
-          ))}
+        <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--card)] p-1 md:flex">
+          {links.map((l) => {
+            const isActive = l === active
+            return (
+              <button
+                key={l}
+                type="button"
+                onClick={() => setActive(l)}
+                aria-current={isActive ? 'page' : undefined}
+                className={
+                  'cursor-pointer rounded-full px-4 py-1.5 text-[13px] font-medium transition duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--card)] active:scale-95 ' +
+                  (isActive
+                    ? 'bg-[var(--accent)] text-[var(--accent-ink)] shadow-sm'
+                    : 'text-[var(--ink-soft)] hover:bg-[color-mix(in_srgb,var(--line)_55%,transparent)] hover:text-[var(--ink)]')
+                }
+              >
+                {l}
+              </button>
+            )
+          })}
         </div>
 
         <div className="flex items-center gap-3">
           <button
             type="button"
             aria-label="Account"
-            className="grid size-10 place-items-center rounded-full border border-[var(--line)] text-[var(--ink)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] active:scale-95"
+            aria-pressed={accountOpen}
+            onClick={() => setAccountOpen((v) => !v)}
+            className={
+              'grid size-10 cursor-pointer place-items-center rounded-full border transition duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] active:scale-95 ' +
+              (accountOpen
+                ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-ink)]'
+                : 'border-[var(--line)] text-[var(--ink)] hover:border-[var(--accent)] hover:text-[var(--accent)]')
+            }
           >
             <UserIcon />
           </button>
           <button
             type="button"
-            aria-label="Cart, 1 item"
-            className="relative grid size-10 place-items-center rounded-full border border-[var(--line)] text-[var(--ink)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] active:scale-95"
+            aria-label={`Cart, ${cart} ${cart === 1 ? 'item' : 'items'}`}
+            onClick={() => setCart((c) => c + 1)}
+            className="relative grid size-10 cursor-pointer place-items-center rounded-full border border-[var(--line)] text-[var(--ink)] transition duration-200 outline-none hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] active:scale-95"
           >
             <CartIcon />
-            <span className="absolute -right-1 -top-1 grid size-[18px] place-items-center rounded-full bg-[var(--accent)] text-[10px] font-bold text-[var(--accent-ink)]">
-              1
+            <span
+              key={cart}
+              className="cart-badge absolute -right-1 -top-1 grid size-[18px] place-items-center rounded-full bg-[var(--accent)] text-[10px] font-bold text-[var(--accent-ink)]"
+            >
+              {cart}
             </span>
           </button>
         </div>
