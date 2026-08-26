@@ -29,12 +29,11 @@
   --accent-ink: var(--color-accent-ink);
   --crust: var(--color-crust);
 
-  /* A real 12" pie: 30cm across. CSS physical units are nominal (96px per
-     inch), so this renders at true size on a display with standard density,
-     and falls back to the viewport terms on anything too small to hold it. */
-  --pizza-size: min(30cm, 78vw, 150vh);
-  /* how much of the circle's height shows above the crop's bottom edge */
-  --pizza-crop: calc(var(--pizza-size) * 0.3);
+  /* The source photos are ~500px square, so the pie is capped near its
+     native size — pushing past that would just upscale and go soft. */
+  --pizza-size: min(620px, 78vw, 150vh);
+  /* exactly the top half of the pie shows above the crop's bottom edge */
+  --pizza-crop: calc(var(--pizza-size) * 0.5);
   /* Vertical travel for the slide. Only the crop window is ever visible, so
      clearing it by a little is enough — a 140% hop would spend most of the
      500ms off-window and read as a blink rather than a slide. */
@@ -46,7 +45,7 @@
 /* phones: the pizza can take a bigger share of the width */
 @media (max-width: 640px) {
   :root {
-    --pizza-size: min(30cm, 64vw, 150vh);
+    --pizza-size: min(620px, 80vw, 150vh);
   }
 }
 
@@ -96,77 +95,23 @@ body {
   top: 0;
   width: var(--pizza-size);
   height: var(--pizza-size);
-  border-radius: 50%;
   transform: translateY(0);
   opacity: 1;
   will-change: transform, opacity;
   transition:
     transform 500ms cubic-bezier(0.4, 0, 0.2, 1),
     opacity 500ms ease;
-  background:
-    /* melted-cheese highlights and browned blisters */
-    radial-gradient(circle closest-side at 38% 30%, rgba(255, 255, 255, 0.45) 0 14%, rgba(255, 255, 255, 0) 42%),
-    radial-gradient(circle closest-side at 63% 41%, rgba(214, 138, 46, 0.5) 0 5%, rgba(214, 138, 46, 0) 16%),
-    radial-gradient(circle closest-side at 36% 57%, rgba(214, 138, 46, 0.45) 0 4%, rgba(214, 138, 46, 0) 14%),
-    radial-gradient(circle closest-side at 55% 62%, rgba(255, 245, 200, 0.7) 0 7%, rgba(255, 245, 200, 0) 20%),
-    /* crust → sauce rim → cheese, softened so the rings don't read as bands */
-    radial-gradient(
-      circle closest-side at 50% 50%,
-      #fbe09a 0 52%,
-      #f7cf75 60%,
-      #eebe57 68%,
-      #d1502c 71%,
-      #b93a1c 76%,
-      #e2a44c 79%,
-      var(--crust) 86%,
-      #e6b05c 93%,
-      #b97e2c 100%
-    );
-  /* no drop shadow — the pie sits flat on the white ground */
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
-/* slice cuts — six wedges scored through the cheese, stopping at the crust */
-.pizza::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: repeating-conic-gradient(
-    from 30deg at 50% 50%,
-    rgba(150, 84, 26, 0.28) 0deg 0.5deg,
-    rgba(150, 84, 26, 0) 0.5deg 60deg
-  );
-  -webkit-mask: radial-gradient(circle closest-side at 50% 50%, #000 0 64%, transparent 66%);
-  mask: radial-gradient(circle closest-side at 50% 50%, #000 0 64%, transparent 66%);
-  pointer-events: none;
-}
-
-/* subtle char marks around the crust */
-.pizza::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: repeating-conic-gradient(
-    from 0deg at 50% 50%,
-    rgba(120, 62, 16, 0.055) 0deg 3deg,
-    rgba(120, 62, 16, 0) 3deg 15deg
-  );
-  -webkit-mask: radial-gradient(circle closest-side at 50% 50%, transparent 0 84%, #000 95% 100%);
-  mask: radial-gradient(circle closest-side at 50% 50%, transparent 0 84%, #000 95% 100%);
-  pointer-events: none;
-}
-
-.topping {
-  position: absolute;
-  transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
-  font-size: calc(var(--pizza-size) * 0.125);
-  line-height: 1;
-  filter: drop-shadow(0 3px 4px rgba(60, 30, 10, 0.35));
+.pizza img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
   user-select: none;
-  pointer-events: none;
+  -webkit-user-drag: none;
 }
+
 
 /* --- slide transition states (see the no-transition + double rAF fix) --- */
 .pizza.active {
