@@ -29,11 +29,13 @@
   --accent-ink: var(--color-accent-ink);
   --crust: var(--color-crust);
 
-  /* The source photos are ~500px square, so the pie is capped near its
-     native size — pushing past that would just upscale and go soft. */
-  --pizza-size: min(620px, 78vw, 150vh);
-  /* exactly the top half of the pie shows above the crop's bottom edge */
-  --pizza-crop: calc(var(--pizza-size) * 0.5);
+  /* The photos are resampled to ~1000px, so the pie can run wide and stay
+     sharp. The vw term leaves room for the two buttons flanking it, and
+     with only ~38% of the circle showing the vh term rarely binds. */
+  --pizza-size: min(880px, 64vw, 150vh);
+  /* The pie sits a little lower than its midpoint — a bit under half of
+     the circle shows above the crop's bottom edge. */
+  --pizza-crop: calc(var(--pizza-size) * 0.38);
   /* Vertical travel for the slide. Only the crop window is ever visible, so
      clearing it by a little is enough — a 140% hop would spend most of the
      500ms off-window and read as a blink rather than a slide. */
@@ -42,10 +44,11 @@
   color-scheme: light;
 }
 
-/* phones: the pizza can take a bigger share of the width */
+/* phones: the buttons and gaps eat a bigger share of a narrow screen, so
+   the pie has to give some width back or the row overflows */
 @media (max-width: 640px) {
   :root {
-    --pizza-size: min(620px, 80vw, 150vh);
+    --pizza-size: min(880px, 60vw, 150vh);
   }
 }
 
@@ -135,9 +138,11 @@ body {
 
 
 /* ---------------------------------------------------------------
-   Floating hero emoji
+   Floating hero ingredients — loose produce photos that bob slowly
    --------------------------------------------------------------- */
-.float-emoji {
+.float-produce {
+  height: auto;
+  opacity: 0.92;
   animation: bob var(--dur, 7s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
   will-change: transform;
@@ -154,7 +159,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .float-emoji {
+  .float-produce {
     animation: none;
   }
   .pizza {

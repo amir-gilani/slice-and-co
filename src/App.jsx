@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import { CartIcon, UserIcon } from './components/Icons'
 import PizzaSlider from './components/PizzaSlider'
+import basil from './assets/basil.webp'
+import pepper from './assets/pepper.webp'
+import pineapple from './assets/pineapple.webp'
+import tomato from './assets/tomato.webp'
 
-// Floating produce scattered around the hero, mirrored left/right like the
-// reference layout. Positions are percentages so they scale with the viewport.
+// Loose ingredients scattered around the hero, mirrored left/right. Positions
+// are percentages so they scale with the viewport, and each keeps its own bob
+// duration/delay so they never move in lockstep.
 const floaters = [
-  { id: 'basil-l', emoji: '🌿', cls: 'left-[6%] top-[10%]', size: 'text-5xl', rot: -14, dur: '7s', delay: '0s' },
-  { id: 'olive-l', emoji: '🫒', cls: 'left-[3%] top-[40%]', size: 'text-4xl', rot: 10, dur: '8.4s', delay: '.5s' },
-  { id: 'chilli-l', emoji: '🌶️', cls: 'left-[15%] top-[44%]', size: 'text-4xl', rot: -22, dur: '9.2s', delay: '1.1s' },
-  { id: 'tomato-l', emoji: '🍅', cls: 'left-[9%] top-[64%]', size: 'text-5xl', rot: 8, dur: '7.8s', delay: '.9s' },
-  { id: 'tomato-r', emoji: '🍅', cls: 'right-[7%] top-[9%]', size: 'text-5xl', rot: -10, dur: '8.8s', delay: '.2s' },
-  { id: 'basil-r', emoji: '🌿', cls: 'right-[15%] top-[41%]', size: 'text-4xl', rot: 16, dur: '7.4s', delay: '1.4s' },
-  { id: 'olive-r', emoji: '🫒', cls: 'right-[3%] top-[38%]', size: 'text-4xl', rot: -8, dur: '9.6s', delay: '.7s' },
-  { id: 'shroom-r', emoji: '🍄', cls: 'right-[8%] top-[62%]', size: 'text-5xl', rot: 12, dur: '8.1s', delay: '1.7s' },
+  { id: 'basil-l', img: basil, cls: 'left-[5%] top-[8%]', w: 'w-[clamp(64px,7.5vw,112px)]', rot: -14, dur: '7s', delay: '0s' },
+  { id: 'pepper-l', img: pepper, cls: 'left-[2%] top-[40%]', w: 'w-[clamp(54px,6vw,90px)]', rot: 10, dur: '8.4s', delay: '.5s' },
+  { id: 'tomato-l', img: tomato, cls: 'left-[13%] top-[62%]', w: 'w-[clamp(50px,5.5vw,82px)]', rot: -22, dur: '9.2s', delay: '1.1s' },
+  { id: 'pineapple-r', img: pineapple, cls: 'right-[6%] top-[7%]', w: 'w-[clamp(58px,6.5vw,96px)]', rot: -10, dur: '8.8s', delay: '.2s' },
+  { id: 'tomato-r', img: tomato, cls: 'right-[2%] top-[38%]', w: 'w-[clamp(54px,6vw,90px)]', rot: 16, dur: '7.4s', delay: '1.4s' },
+  { id: 'basil-r', img: basil, cls: 'right-[14%] top-[64%]', w: 'w-[clamp(50px,5.5vw,82px)]', rot: 12, dur: '8.1s', delay: '1.7s' },
 ]
 
 const links = ['Home', 'Menu', 'Contact']
@@ -85,14 +88,15 @@ export default function App() {
 
       <main className="relative flex w-full flex-1 flex-col items-center overflow-hidden px-4 pt-6 text-center sm:px-10">
         {floaters.map((f) => (
-          <span
+          <img
             key={f.id}
+            src={f.img}
+            alt=""
             aria-hidden="true"
-            className={`float-emoji pointer-events-none absolute hidden select-none opacity-90 sm:block ${f.size} ${f.cls}`}
+            draggable="false"
+            className={`float-produce pointer-events-none absolute hidden select-none sm:block ${f.w} ${f.cls}`}
             style={{ '--rot': `${f.rot}deg`, '--dur': f.dur, '--delay': f.delay }}
-          >
-            {f.emoji}
-          </span>
+          />
         ))}
 
         <PizzaSlider />

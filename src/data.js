@@ -1,7 +1,7 @@
-import hawaiian from './assets/hawaiian.png'
-import pepperoni from './assets/pepperoni.png'
-import supreme from './assets/supreme.png'
-import veggie from './assets/veggie.png'
+import hawaiian from './assets/hawaiian.webp'
+import pepperoni from './assets/pepperoni.webp'
+import supreme from './assets/supreme.webp'
+import veggie from './assets/veggie.webp'
 
 // Photographed pies, shot top-down on a transparent background so they sit
 // flat on the white stage. Each is cropped in half by `.pizza-crop`.
