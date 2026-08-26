@@ -12,7 +12,7 @@ export const pizzas = [
     blurb: 'Double pepperoni, torn basil, blistered cherry tomato.',
     size: '12"',
     slices: '8 slices',
-    price: '$16',
+    price: 16,
     image: pepperoni,
   },
   {
@@ -21,7 +21,7 @@ export const pizzas = [
     blurb: 'Black olive, green pepper, mushroom, vine tomato.',
     size: '12"',
     slices: '8 slices',
-    price: '$15',
+    price: 15,
     image: veggie,
   },
   {
@@ -30,7 +30,7 @@ export const pizzas = [
     blurb: 'Golden pineapple, smoked ham, stretched mozzarella.',
     size: '12"',
     slices: '10 slices',
-    price: '$15',
+    price: 15,
     image: hawaiian,
   },
   {
@@ -39,7 +39,7 @@ export const pizzas = [
     blurb: 'Pepperoni, sausage, olive, red onion, sweet pepper.',
     size: '14"',
     slices: '8 slices',
-    price: '$19',
+    price: 19,
     image: supreme,
   },
 ]

@@ -78,7 +78,13 @@ body {
   height: 100dvh;
   min-height: 100dvh;
   max-height: 100dvh;
-  background: var(--bg);
+  /* Still white edge to edge, but not a dead flat white: a warm oven glow
+     rises from behind the pie and a faint crust-gold wash sits under the
+     nav, so the photo has something to sit in rather than float on. */
+  background:
+    radial-gradient(115% 62% at 50% 112%, rgba(224, 67, 44, 0.11) 0%, rgba(224, 67, 44, 0.045) 42%, rgba(224, 67, 44, 0) 72%),
+    radial-gradient(90% 45% at 50% -12%, rgba(219, 160, 62, 0.1) 0%, rgba(219, 160, 62, 0) 65%),
+    var(--bg);
 }
 
 /* ---------------------------------------------------------------
@@ -168,17 +174,17 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   Slider caption — re-keyed on every pizza, so it replays this
-   short rise-and-fade exactly when the new pie lands.
+   Slider caption — re-keyed in the same frame the slide starts, and
+   given the pie's exact duration and easing so the two land together.
    --------------------------------------------------------------- */
 .pizza-caption {
-  animation: caption-in 460ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: caption-in 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @keyframes caption-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
