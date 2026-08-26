@@ -7,6 +7,10 @@ const DURATION = 500
 
 // Each size gets its own dot so the row reads as a scale at a glance, and
 // its own price step off the pizza's base (medium) price.
+// Angular spacing between names on the ring — wide enough that the two
+// neighbours sit clear of the crust, tight enough to read as one arc.
+const RING_STEP = 46
+
 const SIZES = [
   { id: 's', label: 'Small', inches: '10\"', dot: 8, delta: -3 },
   { id: 'm', label: 'Medium', inches: '12\"', dot: 12, delta: 0 },
@@ -100,54 +104,47 @@ export default function PizzaSlider() {
 
   const pizza = pizzas[current]
   const labelled = pizzas[labelIndex]
-  const activeSize = SIZES.find((s) => s.id === size)
 
   return (
     <div className="mt-auto flex w-full flex-col items-center">
-      {/* Name and price, then the size picker. The name block is re-keyed on
-          the pizza so it fades in exactly when the incoming pie lands; the
-          size row is not, since the choice carries across slides. */}
-      <div className="mb-[clamp(0.9rem,2.5vh,2rem)] flex flex-col items-center px-4 text-center">
-        <div key={labelled.id} className="pizza-caption flex flex-col items-center">
-          <h1 className="font-display text-[clamp(1.7rem,4.6vw,2.9rem)] font-semibold leading-[1.05] tracking-tight text-[var(--ink)]">
-            {labelled.name.split(' ').slice(0, -1).join(' ')}{' '}
-            <em className="italic text-[var(--accent)]">{labelled.name.split(' ').slice(-1)}</em>
-          </h1>
-          <span className="mt-2 font-display text-[clamp(1.05rem,2.2vw,1.35rem)] font-semibold text-[var(--accent)]">
-            ${labelled.price + activeSize.delta}
-          </span>
-        </div>
-
-        <div className="mt-4 flex items-end gap-6 sm:gap-8">
-          {SIZES.map((s) => {
-            const isActive = s.id === size
-            return (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setSize(s.id)}
-                aria-pressed={isActive}
+      {/* Above the pie: the size picker only — the names live on the ring
+          that curves around the pizza. The price rides with the selected
+          size, since that is what it belongs to. */}
+      <div className="mb-[clamp(4rem,9vh,6rem)] flex items-start gap-6 px-4 sm:gap-9">
+        {SIZES.map((s) => {
+          const isActive = s.id === size
+          return (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => setSize(s.id)}
+              aria-pressed={isActive}
+              className={
+                'group flex cursor-pointer flex-col items-center gap-1.5 outline-none transition duration-200 active:scale-95 ' +
+                (isActive ? 'text-[var(--accent)]' : 'text-[var(--ink-soft)] hover:text-[var(--ink)]')
+              }
+            >
+              <span
+                aria-hidden="true"
                 className={
-                  'group flex cursor-pointer flex-col items-center gap-1.5 outline-none transition duration-200 active:scale-95 ' +
-                  (isActive ? 'text-[var(--accent)]' : 'text-[var(--ink-soft)] hover:text-[var(--ink)]')
+                  'rounded-full transition-all duration-300 ' +
+                  (isActive ? 'bg-[var(--accent)]' : 'bg-[var(--line)] group-hover:bg-[var(--ink-soft)]')
+                }
+                style={{ width: s.dot, height: s.dot }}
+              />
+              <span className="text-[13px] font-medium tabular-nums">{s.inches}</span>
+              <span className="text-[10px] uppercase tracking-[0.18em] opacity-70">{s.label}</span>
+              <span
+                className={
+                  'font-display text-[15px] font-semibold tabular-nums transition-opacity duration-300 ' +
+                  (isActive ? 'opacity-100' : 'opacity-0')
                 }
               >
-                <span
-                  aria-hidden="true"
-                  className={
-                    'rounded-full transition-all duration-300 ' +
-                    (isActive
-                      ? 'bg-[var(--accent)]'
-                      : 'bg-[var(--line)] group-hover:bg-[var(--ink-soft)]')
-                  }
-                  style={{ width: s.dot, height: s.dot }}
-                />
-                <span className="text-[13px] font-medium tabular-nums">{s.inches}</span>
-                <span className="text-[10px] uppercase tracking-[0.18em] opacity-70">{s.label}</span>
-              </button>
-            )
-          })}
-        </div>
+                ${labelled.price + s.delta}
+              </span>
+            </button>
+          )
+        })}
       </div>
 
       <div className="flex w-full max-w-full items-end justify-center gap-[clamp(0.25rem,4vw,3.5rem)]">
@@ -160,15 +157,51 @@ export default function PizzaSlider() {
           <ChevronLeft />
         </button>
 
-        <div className="pizza-crop">
-          <Pizza ref={currentRef} key={`slide-${current}`} pizza={pizza} className="active" />
-          {incoming && (
-            <Pizza
-              ref={incomingRef}
-              key={`slide-${incoming.index}`}
-              pizza={pizzas[incoming.index]}
-            />
-          )}
+        {/* The name ring: every pizza's name sits on a circle sharing the
+            pie's centre, and the whole ring turns so the active one lands at
+            top dead centre. It uses labelIndex, so it turns in the same frame
+            the pie starts moving. */}
+        <div className="pizza-stage">
+          {/* the ring is decorative markup, so the name still needs a plain
+              spoken equivalent */}
+          <span className="sr-only">{labelled.name}</span>
+
+          <div
+            className="name-ring"
+            style={{ '--ring-rot': `${-labelIndex * RING_STEP}deg` }}
+            aria-hidden="true"
+          >
+            {pizzas.map((p, i) => {
+              // shortest way round, so the two neighbours flanking the active
+              // name are the ones that stay visible
+              const half = pizzas.length / 2
+              const offset = ((i - labelIndex + half + pizzas.length) % pizzas.length) - half
+              return (
+                <span
+                  key={p.id}
+                  className="name-ring-item font-display"
+                  style={{
+                    '--a': `${i * RING_STEP}deg`,
+                    opacity: offset === 0 ? 1 : Math.abs(offset) === 1 ? 0.32 : 0,
+                    color: offset === 0 ? 'var(--ink)' : 'var(--ink-soft)',
+                  }}
+                >
+                  {p.name}
+                </span>
+              )
+            })}
+          </div>
+
+          <div className="pizza-crop">
+            <Pizza ref={currentRef} key={`slide-${current}`} pizza={pizza} className="active" />
+            {incoming && (
+              <Pizza
+                ref={incomingRef}
+                key={`slide-${incoming.index}`}
+                pizza={pizzas[incoming.index]}
+              />
+            )}
+          </div>
         </div>
 
         <button

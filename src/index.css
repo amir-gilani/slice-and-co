@@ -90,6 +90,44 @@ body {
 /* ---------------------------------------------------------------
    The pizza itself — crust / sauce / cheese are pure radial gradients
    --------------------------------------------------------------- */
+/* Wrapper the ring can overflow — the crop clips, this does not. */
+.pizza-stage {
+  position: relative;
+  flex: none;
+}
+
+/* The ring is a zero-size point pinned to the pie's centre (half the
+   pizza down from the crop's top edge); every name hangs off it at its
+   own angle, and turning the ring carries them around the crust. */
+.name-ring {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--pizza-size) * 0.5);
+  width: 0;
+  height: 0;
+  transform: rotate(var(--ring-rot, 0deg));
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.name-ring-item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  font-size: clamp(0.8rem, 1.5vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  /* centre on the ring point, swing out to the angle, then push out past
+     the crust — the text stays tangent to the circle */
+  transform: translate(-50%, -50%) rotate(var(--a, 0deg))
+    translateY(calc(var(--pizza-size) * -0.57));
+  transition:
+    opacity 500ms ease,
+    color 500ms ease;
+}
+
 .pizza-crop {
   position: relative;
   width: var(--pizza-size);
@@ -168,33 +206,9 @@ body {
   .float-produce {
     animation: none;
   }
-  .pizza {
+  .pizza,
+  .name-ring {
     transition-duration: 1ms;
-  }
-}
-
-/* ---------------------------------------------------------------
-   Slider caption — re-keyed in the same frame the slide starts, and
-   given the pie's exact duration and easing so the two land together.
-   --------------------------------------------------------------- */
-.pizza-caption {
-  animation: caption-in 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-@keyframes caption-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pizza-caption {
-    animation-duration: 1ms;
   }
 }
 
