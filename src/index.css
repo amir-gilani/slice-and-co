@@ -61,9 +61,17 @@ body,
   margin: 0;
   padding: 0;
   width: 100%;
+  min-height: 100%;
+  overscroll-behavior: none;
+}
+
+/* The hero is a fixed, full-screen composition, so it — and only it — locks
+   scrolling. App sets the flag from the route. */
+html[data-lock='on'],
+html[data-lock='on'] body,
+html[data-lock='on'] #root {
   height: 100%;
   overflow: hidden;
-  overscroll-behavior: none;
 }
 
 body {
@@ -76,9 +84,7 @@ body {
 .stage,
 .card {
   position: relative;
-  height: 100dvh;
   min-height: 100dvh;
-  max-height: 100dvh;
   /* Still white edge to edge, but not a dead flat white: a warm oven glow
      rises from behind the pie, a faint crust-gold wash sits under the nav,
      and a wide soft vignette pulls the corners down just enough to seat the
@@ -89,6 +95,19 @@ body {
     radial-gradient(90% 45% at 50% -12%, rgba(219, 160, 62, 0.1) 0%, rgba(219, 160, 62, 0) 65%),
     radial-gradient(105% 85% at 50% 42%, rgba(255, 255, 255, 0) 52%, rgba(36, 27, 23, 0.05) 100%),
     var(--bg);
+  background-attachment: fixed;
+}
+
+html[data-lock='on'] .stage {
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+/* The glow and vignette are composed for the hero's viewport-sized frame; on a
+   long scrolling page they would stretch, so those pages get a plain ground and
+   let the section rules carry the structure. */
+html[data-lock='off'] .stage {
+  background: var(--bg);
 }
 
 /* A fine grain over the whole stage — an inline SVG turbulence, no asset

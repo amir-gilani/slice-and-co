@@ -17,9 +17,9 @@ const angleOf = (i) => (i - (pizzas.length - 1) / 2) * RING_STEP
 // enough that choosing Large feels like it changed something real, small
 // enough that the crust never reaches the ring.
 const SIZES = [
-  { id: 's', label: 'Small', inches: '10\"', delta: -3, scale: 0.955 },
-  { id: 'm', label: 'Medium', inches: '12\"', delta: 0, scale: 1 },
-  { id: 'l', label: 'Large', inches: '14\"', delta: 4, scale: 1.045 },
+  { id: 's', label: 'Small', inches: '10"', delta: -3, scale: 0.955 },
+  { id: 'm', label: 'Medium', inches: '12"', delta: 0, scale: 1 },
+  { id: 'l', label: 'Large', inches: '14"', delta: 4, scale: 1.045 },
 ]
 
 export default function PizzaSlider() {
