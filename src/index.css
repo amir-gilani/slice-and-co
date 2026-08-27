@@ -114,41 +114,50 @@ body {
 
 .name-ring-line {
   fill: none;
-  stroke: color-mix(in srgb, var(--ink) 15%, transparent);
-  stroke-width: 0.16;
+  stroke: color-mix(in srgb, var(--ink) 11%, transparent);
+  stroke-width: 0.12;
 }
 
 /* Every name is drawn at top dead centre, then swung to its own angle.
-   The viewBox is already centred on 0,0 — which is the ring's centre — so
-   the default transform-origin is the right one. Setting 50% 50% is not:
-   the browser measures it from the SVG viewport's own origin, not from the
-   viewBox's negative corner, which throws every name onto a different
-   radius. */
+   The viewBox is already centred on 0,0 — the ring's centre — so the
+   default transform-origin is the right one. 50% 50% is not: the browser
+   measures it from the SVG viewport's origin, not the viewBox's negative
+   corner, which throws every name onto a different radius. */
 .name-ring-slot {
   transform: rotate(var(--a, 0deg));
 }
 
-/* the mark is the only thing that moves, and it moves on the pie's timing */
-.name-ring-mark {
+/* The mark carries a background-coloured halo, so the hairline appears to
+   break cleanly around it rather than running straight through. */
+.name-ring-mark circle {
   fill: var(--ink);
+  stroke: var(--bg);
+  stroke-width: 0.6;
+  paint-order: stroke;
+}
+
+.name-ring-mark {
   transform: rotate(var(--a, 0deg));
   transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .name-ring-text {
   font-family: var(--font-body);
-  font-size: 1.55px;
-  font-weight: 500;
-  letter-spacing: 0.24px;
+  font-size: 1.36px;
+  /* light weight and restrained tracking — at this size the names should
+     read as quiet labels around the pie, not as a second headline */
+  font-weight: 400;
+  letter-spacing: 0.16px;
   text-transform: uppercase;
   fill: var(--ink-soft);
-  opacity: 0.45;
+  opacity: 0.42;
   transition:
     opacity 500ms ease,
     fill 500ms ease;
 }
 
 .name-ring-text.is-active {
+  font-weight: 500;
   fill: var(--ink);
   opacity: 1;
 }

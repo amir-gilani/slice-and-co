@@ -14,9 +14,9 @@ const RING_STEP = 33
 const angleOf = (i) => (i - (pizzas.length - 1) / 2) * RING_STEP
 
 const SIZES = [
-  { id: 's', label: 'Small', inches: '10\"', dot: 8, delta: -3 },
-  { id: 'm', label: 'Medium', inches: '12\"', dot: 12, delta: 0 },
-  { id: 'l', label: 'Large', inches: '14\"', dot: 16, delta: 4 },
+  { id: 's', label: 'Small', inches: '10\"', delta: -3 },
+  { id: 'm', label: 'Medium', inches: '12\"', delta: 0 },
+  { id: 'l', label: 'Large', inches: '14\"', delta: 4 },
 ]
 
 export default function PizzaSlider() {
@@ -106,56 +106,63 @@ export default function PizzaSlider() {
 
   const pizza = pizzas[current]
   const labelled = pizzas[labelIndex]
+  const activeSize = SIZES.find((s) => s.id === size)
 
   return (
     <div className="mt-auto flex w-full flex-col items-center">
-      {/* Above the pie: the size picker only — the names live on the ring
-          that curves around the pizza. The price rides with the selected
-          size, since that is what it belongs to. */}
+      {/* The size picker, built on the ring's own vocabulary: a hairline with
+          a mark riding it. Three stops on the line, the selected one filled
+          and haloed so the line breaks around it, exactly as the name mark
+          does around the arc. */}
       <div className="mb-[clamp(6rem,15vh,9.5rem)] flex flex-col items-center px-4">
         <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-[var(--ink-soft)]">
           Select size
         </span>
 
-        <div className="mt-5 flex items-start gap-7 sm:gap-10">
-        {SIZES.map((s) => {
-          const isActive = s.id === size
-          return (
-            <button
-              key={s.id}
-              type="button"
-              onClick={() => setSize(s.id)}
-              aria-pressed={isActive}
-              className={
-                'group flex cursor-pointer flex-col items-center gap-1.5 outline-none transition duration-200 active:scale-95 ' +
-                (isActive ? 'text-[var(--accent)]' : 'text-[var(--ink-soft)] hover:text-[var(--ink)]')
-              }
-            >
-              <span
-                aria-hidden="true"
+        <div className="relative mt-6 grid grid-cols-3">
+          {/* The track runs to the outer edge of the end stops, not to their
+              centres — half a dot wider on each side. */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-[calc(16.667%-5.5px)] right-[calc(16.667%-5.5px)] top-[5px] h-px bg-[color-mix(in_srgb,var(--ink)_11%,transparent)]"
+          />
+
+          {SIZES.map((s) => {
+            const isActive = s.id === size
+            return (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => setSize(s.id)}
+                aria-pressed={isActive}
                 className={
-                  'rounded-full transition-all duration-300 ' +
-                  (isActive ? 'bg-[var(--accent)]' : 'bg-[var(--line)] group-hover:bg-[var(--ink-soft)]')
-                }
-                // the dots differ in size, so the smaller ones are nudged down
-                // to share a bottom edge — otherwise each column's labels start
-                // at a different height and the row reads ragged
-                style={{ width: s.dot, height: s.dot, marginTop: 16 - s.dot }}
-              />
-              <span className="text-[13px] font-medium tabular-nums">{s.inches}</span>
-              <span className="text-[10px] uppercase tracking-[0.18em] opacity-70">{s.label}</span>
-              <span
-                className={
-                  'font-display text-[15px] font-semibold tabular-nums transition-opacity duration-300 ' +
-                  (isActive ? 'opacity-100' : 'opacity-0')
+                  'group relative flex w-[86px] cursor-pointer flex-col items-center outline-none transition duration-200 active:scale-95 sm:w-[104px] ' +
+                  (isActive ? 'text-[var(--ink)]' : 'text-[var(--ink-soft)] hover:text-[var(--ink)]')
                 }
               >
-                ${labelled.price + s.delta}
-              </span>
-            </button>
-          )
-        })}
+                <span
+                  aria-hidden="true"
+                  className={
+                    'relative size-[11px] rounded-full ring-4 ring-[var(--bg)] transition-all duration-300 ' +
+                    (isActive
+                      ? 'bg-[var(--ink)]'
+                      : 'bg-[var(--bg)] shadow-[inset_0_0_0_1px_var(--line)] group-hover:shadow-[inset_0_0_0_1px_var(--ink-soft)]')
+                  }
+                />
+                <span className="mt-4 text-[15px] font-medium tabular-nums leading-none">
+                  {s.inches}
+                </span>
+                <span className="mt-2 text-[10px] uppercase tracking-[0.2em] leading-none opacity-60">
+                  {s.label}
+                </span>
+              </button>
+            )
+          })}
         </div>
+
+        <span className="mt-5 font-display text-[17px] font-semibold tabular-nums text-[var(--accent)]">
+          ${labelled.price + activeSize.delta}
+        </span>
       </div>
 
       <div className="flex w-full max-w-full items-end justify-center gap-[clamp(0.25rem,4vw,3.5rem)]">
@@ -188,14 +195,14 @@ export default function PizzaSlider() {
                   centred label straddles its offset, and anything landing
                   before the path's start point is not drawn at all, so the
                   seam has to sit far away from every name. */}
-              <path id="name-arc" d="M 0,57.5 A 57.5,57.5 0 1,1 0,-57.5 A 57.5,57.5 0 1,1 0,57.5" />
+              <path id="name-arc" d="M 0,56 A 56,56 0 1,1 0,-56 A 56,56 0 1,1 0,56" />
             </defs>
 
             <circle className="name-ring-line" cx="0" cy="0" r="53" />
 
             {/* the mark swings to the active name on the pie's own timing */}
             <g className="name-ring-mark" style={{ '--a': `${angleOf(labelIndex)}deg` }}>
-              <circle cx="0" cy="-53" r="0.9" />
+              <circle cx="0" cy="-53" r="0.5" />
             </g>
 
             {pizzas.map((p, i) => (
