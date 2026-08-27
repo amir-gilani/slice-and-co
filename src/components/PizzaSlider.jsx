@@ -137,7 +137,10 @@ export default function PizzaSlider() {
                   'rounded-full transition-all duration-300 ' +
                   (isActive ? 'bg-[var(--accent)]' : 'bg-[var(--line)] group-hover:bg-[var(--ink-soft)]')
                 }
-                style={{ width: s.dot, height: s.dot }}
+                // the dots differ in size, so the smaller ones are nudged down
+                // to share a bottom edge — otherwise each column's labels start
+                // at a different height and the row reads ragged
+                style={{ width: s.dot, height: s.dot, marginTop: 16 - s.dot }}
               />
               <span className="text-[13px] font-medium tabular-nums">{s.inches}</span>
               <span className="text-[10px] uppercase tracking-[0.18em] opacity-70">{s.label}</span>
@@ -172,7 +175,8 @@ export default function PizzaSlider() {
               spoken equivalent */}
           <span className="sr-only">{labelled.name}</span>
 
-          {/* Two concentric hairlines ringing the pie. The names are fixed
+          {/* One hairline hugging the crust, with the names running on the
+              track the second line used to occupy. The names are fixed
               around the arc — it is the mark that travels to whichever one is
               on the counter, which keeps every name legible and the left and
               right of the ring evenly filled. The viewBox is centred on the
@@ -187,12 +191,11 @@ export default function PizzaSlider() {
               <path id="name-arc" d="M 0,57.5 A 57.5,57.5 0 1,1 0,-57.5 A 57.5,57.5 0 1,1 0,57.5" />
             </defs>
 
-            <circle className="name-ring-line" cx="0" cy="0" r="57.5" />
             <circle className="name-ring-line" cx="0" cy="0" r="53" />
 
             {/* the mark swings to the active name on the pie's own timing */}
             <g className="name-ring-mark" style={{ '--a': `${angleOf(labelIndex)}deg` }}>
-              <circle cx="0" cy="-53" r="1.15" />
+              <circle cx="0" cy="-53" r="0.9" />
             </g>
 
             {pizzas.map((p, i) => (
@@ -202,7 +205,7 @@ export default function PizzaSlider() {
                   textAnchor="middle"
                 >
                   {/* drawn at top dead centre, then swung out by the slot */}
-                  <textPath href="#name-arc" xlinkHref="#name-arc" startOffset="50%" dy="-2.6">
+                  <textPath href="#name-arc" xlinkHref="#name-arc" startOffset="50%">
                     {p.name}
                   </textPath>
                 </text>
