@@ -75,16 +75,33 @@ body {
 
 .stage,
 .card {
+  position: relative;
   height: 100dvh;
   min-height: 100dvh;
   max-height: 100dvh;
   /* Still white edge to edge, but not a dead flat white: a warm oven glow
-     rises from behind the pie and a faint crust-gold wash sits under the
-     nav, so the photo has something to sit in rather than float on. */
+     rises from behind the pie, a faint crust-gold wash sits under the nav,
+     and a wide soft vignette pulls the corners down just enough to seat the
+     pie in the middle of the frame rather than have it float on a blank
+     sheet. Every layer stays under 12% alpha, so the page still reads white. */
   background:
     radial-gradient(115% 62% at 50% 112%, rgba(224, 67, 44, 0.11) 0%, rgba(224, 67, 44, 0.045) 42%, rgba(224, 67, 44, 0) 72%),
     radial-gradient(90% 45% at 50% -12%, rgba(219, 160, 62, 0.1) 0%, rgba(219, 160, 62, 0) 65%),
+    radial-gradient(105% 85% at 50% 42%, rgba(255, 255, 255, 0) 52%, rgba(36, 27, 23, 0.05) 100%),
     var(--bg);
+}
+
+/* A fine grain over the whole stage — an inline SVG turbulence, no asset
+   fetched. At 3.5% it never reads as texture, it just stops large flat areas
+   from banding and gives the white some tooth. */
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ---------------------------------------------------------------
