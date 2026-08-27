@@ -7,9 +7,11 @@ const DURATION = 500
 
 // Each size gets its own dot so the row reads as a scale at a glance, and
 // its own price step off the pizza's base (medium) price.
-// Angular spacing between names on the ring — wide enough that the two
-// neighbours sit clear of the crust, tight enough to read as one arc.
-const RING_STEP = 46
+// Angular spacing between names on the ring, fanned symmetrically about
+// top dead centre so both sides of the arc carry the same weight.
+const RING_STEP = 33
+
+const angleOf = (i) => (i - (pizzas.length - 1) / 2) * RING_STEP
 
 const SIZES = [
   { id: 's', label: 'Small', inches: '10\"', dot: 8, delta: -3 },
@@ -110,7 +112,12 @@ export default function PizzaSlider() {
       {/* Above the pie: the size picker only — the names live on the ring
           that curves around the pizza. The price rides with the selected
           size, since that is what it belongs to. */}
-      <div className="mb-[clamp(4rem,9vh,6rem)] flex items-start gap-6 px-4 sm:gap-9">
+      <div className="mb-[clamp(6rem,15vh,9.5rem)] flex flex-col items-center px-4">
+        <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-[var(--ink-soft)]">
+          Select size
+        </span>
+
+        <div className="mt-5 flex items-start gap-7 sm:gap-10">
         {SIZES.map((s) => {
           const isActive = s.id === size
           return (
@@ -145,6 +152,7 @@ export default function PizzaSlider() {
             </button>
           )
         })}
+        </div>
       </div>
 
       <div className="flex w-full max-w-full items-end justify-center gap-[clamp(0.25rem,4vw,3.5rem)]">
@@ -157,40 +165,50 @@ export default function PizzaSlider() {
           <ChevronLeft />
         </button>
 
-        {/* The name ring: every pizza's name sits on a circle sharing the
-            pie's centre, and the whole ring turns so the active one lands at
-            top dead centre. It uses labelIndex, so it turns in the same frame
-            the pie starts moving. */}
+        {/* The mark reads labelIndex, so it starts travelling in the same
+            frame the pie does. */}
         <div className="pizza-stage">
           {/* the ring is decorative markup, so the name still needs a plain
               spoken equivalent */}
           <span className="sr-only">{labelled.name}</span>
 
-          <div
-            className="name-ring"
-            style={{ '--ring-rot': `${-labelIndex * RING_STEP}deg` }}
-            aria-hidden="true"
-          >
-            {pizzas.map((p, i) => {
-              // shortest way round, so the two neighbours flanking the active
-              // name are the ones that stay visible
-              const half = pizzas.length / 2
-              const offset = ((i - labelIndex + half + pizzas.length) % pizzas.length) - half
-              return (
-                <span
-                  key={p.id}
-                  className="name-ring-item font-display"
-                  style={{
-                    '--a': `${i * RING_STEP}deg`,
-                    opacity: offset === 0 ? 1 : Math.abs(offset) === 1 ? 0.32 : 0,
-                    color: offset === 0 ? 'var(--ink)' : 'var(--ink-soft)',
-                  }}
+          {/* Two concentric hairlines ringing the pie. The names are fixed
+              around the arc — it is the mark that travels to whichever one is
+              on the counter, which keeps every name legible and the left and
+              right of the ring evenly filled. The viewBox is centred on the
+              pizza's own centre and scaled so 50 units = its radius, holding
+              rings, type and crust in proportion at any size. */}
+          <svg className="name-ring" viewBox="-72 -72 144 144" aria-hidden="true">
+            <defs>
+              {/* The name track. It starts at the BOTTOM of the circle: a
+                  centred label straddles its offset, and anything landing
+                  before the path's start point is not drawn at all, so the
+                  seam has to sit far away from every name. */}
+              <path id="name-arc" d="M 0,57.5 A 57.5,57.5 0 1,1 0,-57.5 A 57.5,57.5 0 1,1 0,57.5" />
+            </defs>
+
+            <circle className="name-ring-line" cx="0" cy="0" r="57.5" />
+            <circle className="name-ring-line" cx="0" cy="0" r="53" />
+
+            {/* the mark swings to the active name on the pie's own timing */}
+            <g className="name-ring-mark" style={{ '--a': `${angleOf(labelIndex)}deg` }}>
+              <circle cx="0" cy="-53" r="1.15" />
+            </g>
+
+            {pizzas.map((p, i) => (
+              <g key={p.id} className="name-ring-slot" style={{ '--a': `${angleOf(i)}deg` }}>
+                <text
+                  className={`name-ring-text${i === labelIndex ? ' is-active' : ''}`}
+                  textAnchor="middle"
                 >
-                  {p.name}
-                </span>
-              )
-            })}
-          </div>
+                  {/* drawn at top dead centre, then swung out by the slot */}
+                  <textPath href="#name-arc" xlinkHref="#name-arc" startOffset="50%" dy="-2.6">
+                    {p.name}
+                  </textPath>
+                </text>
+              </g>
+            ))}
+          </svg>
 
           <div className="pizza-crop">
             <Pizza ref={currentRef} key={`slide-${current}`} pizza={pizza} className="active" />

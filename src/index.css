@@ -96,36 +96,61 @@ body {
   flex: none;
 }
 
-/* The ring is a zero-size point pinned to the pie's centre (half the
-   pizza down from the crop's top edge); every name hangs off it at its
-   own angle, and turning the ring carries them around the crust. */
+/* The name ring — two hairline circles concentric with the pie. The viewBox
+   is 144 units across with the pizza at 50 units radius, so sizing the svg
+   to 1.44x the pizza keeps rings, type and crust in proportion. The rings
+   run full circle; the hero's overflow crops them at the bottom edge. */
 .name-ring {
   position: absolute;
   left: 50%;
   top: calc(var(--pizza-size) * 0.5);
-  width: 0;
-  height: 0;
-  transform: rotate(var(--ring-rot, 0deg));
-  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  width: calc(var(--pizza-size) * 1.44);
+  height: calc(var(--pizza-size) * 1.44);
+  transform: translate(-50%, -50%);
+  overflow: visible;
   pointer-events: none;
   z-index: 2;
 }
 
-.name-ring-item {
-  position: absolute;
-  left: 0;
-  top: 0;
-  white-space: nowrap;
-  font-size: clamp(0.8rem, 1.5vw, 1.15rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  /* centre on the ring point, swing out to the angle, then push out past
-     the crust — the text stays tangent to the circle */
-  transform: translate(-50%, -50%) rotate(var(--a, 0deg))
-    translateY(calc(var(--pizza-size) * -0.57));
+.name-ring-line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 15%, transparent);
+  stroke-width: 0.16;
+}
+
+/* Every name is drawn at top dead centre, then swung to its own angle.
+   The viewBox is already centred on 0,0 — which is the ring's centre — so
+   the default transform-origin is the right one. Setting 50% 50% is not:
+   the browser measures it from the SVG viewport's own origin, not from the
+   viewBox's negative corner, which throws every name onto a different
+   radius. */
+.name-ring-slot {
+  transform: rotate(var(--a, 0deg));
+}
+
+/* the mark is the only thing that moves, and it moves on the pie's timing */
+.name-ring-mark {
+  fill: var(--ink);
+  transform: rotate(var(--a, 0deg));
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.name-ring-text {
+  font-family: var(--font-body);
+  font-size: 1.55px;
+  font-weight: 500;
+  letter-spacing: 0.24px;
+  text-transform: uppercase;
+  fill: var(--ink-soft);
+  opacity: 0.45;
   transition:
     opacity 500ms ease,
-    color 500ms ease;
+    fill 500ms ease;
+}
+
+.name-ring-text.is-active {
+  fill: var(--ink);
+  opacity: 1;
 }
 
 .pizza-crop {
@@ -207,7 +232,7 @@ body {
     animation: none;
   }
   .pizza,
-  .name-ring {
+  .name-ring-turn {
     transition-duration: 1ms;
   }
 }
