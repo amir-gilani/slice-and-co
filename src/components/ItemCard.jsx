@@ -1,34 +1,55 @@
 import { Link } from 'react-router-dom'
+import { categoryOf } from '../data'
 import ImageSlot from './ImageSlot'
 
 /**
  * One menu item as a card — used by the menu grid and by the featured row on
  * the home page, so the two always stay in step.
+ *
+ * `index` only staggers the reveal animation; leave it off and the card simply
+ * appears with the rest.
  */
-export default function ItemCard({ item }) {
+export default function ItemCard({ item, index = 0, showCategory = false }) {
+  const cat = categoryOf(item.category)
+
   return (
-    <article className="group flex flex-col">
-      <Link
-        to={`/menu/${item.id}`}
-        className="block outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--bg)]"
-      >
-        <div className="overflow-hidden rounded-2xl">
-          <div className="transition-transform duration-500 ease-out group-hover:scale-[1.03]">
+    <article
+      className="item-card reveal group flex flex-col"
+      style={{ '--tint': cat?.tint, '--i': index }}
+    >
+      {/* The photo repeats the link on the title, so it is hidden from
+          assistive tech rather than announced twice — but the section badge
+          sits outside that link, since it is the one thing here the title row
+          does not already say. */}
+      <div className="item-card-frame overflow-hidden rounded-2xl">
+        <Link to={`/menu/${item.id}`} tabIndex={-1} aria-hidden="true" className="block">
+          <div className="transition-transform duration-500 ease-out group-hover:scale-[1.04]">
             <ImageSlot
               src={item.image}
               alt={item.name}
               ratio="4/3"
               fit="contain"
               label={item.name}
-              hint="add photo"
+              icon={cat?.icon}
+              tint={cat?.tint}
             />
           </div>
-        </div>
-      </Link>
+        </Link>
+
+        {showCategory && cat && (
+          <span className="section-chip absolute left-3 top-3">
+            <span aria-hidden="true">{cat.icon}</span>
+            {cat.label}
+          </span>
+        )}
+      </div>
 
       <div className="mt-5 flex items-baseline gap-3">
         <h3 className="font-display text-[19px] font-semibold leading-tight tracking-tight text-[var(--ink)]">
-          <Link to={`/menu/${item.id}`} className="transition hover:text-[var(--accent)]">
+          <Link
+            to={`/menu/${item.id}`}
+            className="outline-none transition hover:text-[var(--accent)] focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--bg)]"
+          >
             {item.name}
           </Link>
         </h3>

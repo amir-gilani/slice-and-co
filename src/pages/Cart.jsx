@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import ImageSlot from '../components/ImageSlot'
 import PageHeader from '../components/PageHeader'
 import { useCart } from '../cart-store'
+import { categoryOf } from '../data'
 
 const DELIVERY = 3.5
 
@@ -15,8 +16,8 @@ export default function Cart() {
         <PageHeader eyebrow="Your order" title="The box is" accent="empty" />
         <div className="mx-auto w-full max-w-6xl px-6 pb-32 sm:px-10">
           <p className="max-w-md text-[15px] leading-relaxed text-[var(--ink-soft)]">
-            Nothing in the order yet. Pick a pizza, choose a size and a crust, and it will
-            show up here.
+            Nothing in the order yet. Pick something off the board — pizza, a burger, a wrap,
+            a cold drink — and it will show up here.
           </p>
           <Link
             to="/menu"
@@ -44,7 +45,16 @@ export default function Cart() {
           {lines.map((l) => (
             <li key={l.key} className="flex gap-5 py-6">
               <div className="w-24 shrink-0 sm:w-28">
-                <ImageSlot src={l.image} alt={l.name} ratio="1/1" fit="contain" label={l.name} rounded="rounded-xl" />
+                <ImageSlot
+                  src={l.image}
+                  alt={l.name}
+                  ratio="1/1"
+                  fit="contain"
+                  label={l.name}
+                  icon={categoryOf(l.category)?.icon}
+                  tint={categoryOf(l.category)?.tint}
+                  rounded="rounded-xl"
+                />
               </div>
 
               <div className="flex flex-1 flex-col">
@@ -60,9 +70,12 @@ export default function Cart() {
                   </span>
                 </div>
 
+                {/* Baskets saved before the menu grew past pizza carry a
+                    "crust" where a line now carries the generic "variant" —
+                    read both, so a stored order does not come back with half
+                    its line missing. */}
                 <p className="mt-1.5 text-[12px] text-[var(--ink-soft)]">
-                  {l.size} · {l.crust}
-                  {l.extras?.length ? ` · ${l.extras.join(', ')}` : ''}
+                  {[l.size, l.variant ?? l.crust, l.extras?.join(', ')].filter(Boolean).join(' · ')}
                 </p>
 
                 <div className="mt-auto flex items-center gap-4 pt-4">

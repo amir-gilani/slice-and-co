@@ -4,10 +4,12 @@ const columns = [
   {
     title: 'Menu',
     links: [
-      { label: 'All pizzas', to: '/menu' },
-      { label: 'Sides', to: '/menu' },
-      { label: 'Drinks', to: '/menu' },
-      { label: 'Deals', to: '/menu' },
+      { label: 'Pizza', to: '/menu?c=pizza' },
+      { label: 'Burgers', to: '/menu?c=burgers' },
+      { label: 'Fried', to: '/menu?c=fried' },
+      { label: 'Falafel & wraps', to: '/menu?c=falafel' },
+      { label: 'Cold plates', to: '/menu?c=cold' },
+      { label: 'Drinks', to: '/menu?c=drinks' },
     ],
   },
   {

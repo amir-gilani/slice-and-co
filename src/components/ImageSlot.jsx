@@ -1,5 +1,5 @@
 /**
- * A placeholder standing in for a photo that hasn't been dropped in yet.
+ * The frame a menu photo sits in — and what stands there until one exists.
  *
  * To fill one: drop the file into src/assets, import it, and pass it as `src` —
  * the slot renders the photo in the same frame at the same aspect ratio, so
@@ -11,6 +11,12 @@
  * `fit` decides how the photo sits in the frame. Cut-outs on a transparent
  * background — like the pies — want "contain", so the whole shape stays
  * visible; edge-to-edge photography wants the default "cover".
+ *
+ * With no `src`, the slot draws its section's emoji on a wash of that
+ * section's tint (see `categories` in data.js). That is deliberate: a menu
+ * three-quarters full of grey "no image" boxes reads as broken, whereas a
+ * board of tinted glyphs reads as a house style — and the tint is doing real
+ * work, telling burgers from drinks at a glance while you scroll.
  */
 export default function ImageSlot({
   src,
@@ -18,19 +24,19 @@ export default function ImageSlot({
   ratio = '4/3',
   fit = 'cover',
   label = 'Image',
-  hint,
+  icon,
+  tint,
   rounded = 'rounded-2xl',
   className = '',
 }) {
   const frame = `relative overflow-hidden ${rounded} ${className}`
+  // Falls back to the crust gold, so a slot with no section still looks placed.
+  const style = { aspectRatio: ratio, '--tint': tint || 'var(--crust)' }
 
   if (src) {
     const contain = fit === 'contain'
     return (
-      <div
-        className={`${frame} ${contain ? 'bg-[color-mix(in_srgb,var(--crust)_7%,var(--card))] p-3' : ''}`}
-        style={{ aspectRatio: ratio }}
-      >
+      <div className={`${frame} ${contain ? 'image-frame' : ''}`} style={style}>
         <img
           src={src}
           alt={alt}
@@ -43,22 +49,14 @@ export default function ImageSlot({
 
   return (
     <div
-      className={`${frame} image-slot grid place-items-center border border-[var(--line)] bg-[color-mix(in_srgb,var(--crust)_6%,var(--card))]`}
-      style={{ aspectRatio: ratio }}
+      className={`${frame} image-slot grid place-items-center`}
+      style={style}
       role="img"
-      aria-label={`${label} placeholder`}
+      aria-label={alt || label}
     >
-      <div className="flex flex-col items-center gap-2 px-4 text-center">
-        <svg viewBox="0 0 24 24" fill="none" className="size-6 text-[var(--ink-soft)] opacity-45">
-          <rect x="3" y="4" width="18" height="16" rx="2.5" stroke="currentColor" strokeWidth="1.4" />
-          <circle cx="8.75" cy="9.75" r="1.6" stroke="currentColor" strokeWidth="1.4" />
-          <path d="m4.5 17 4.2-4.2a1.8 1.8 0 0 1 2.5 0l2 2 1.6-1.5a1.8 1.8 0 0 1 2.5 0l4.2 4.2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-        </svg>
-        <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--ink-soft)] opacity-70">
-          {label}
-        </span>
-        {hint && <span className="text-[11px] text-[var(--ink-soft)] opacity-50">{hint}</span>}
-      </div>
+      <span aria-hidden="true" className="image-slot-glyph select-none">
+        {icon || '🍽️'}
+      </span>
     </div>
   )
 }

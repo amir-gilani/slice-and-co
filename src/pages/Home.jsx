@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import CategoryTiles from '../components/CategoryTiles'
 import ItemCard from '../components/ItemCard'
 import PizzaSlider from '../components/PizzaSlider'
 import StatStrip from '../components/StatStrip'
@@ -23,7 +24,11 @@ const floaters = [
   { id: 'pepper-r', img: pepper, cls: 'right-[21%] top-[6%]', w: 'w-[clamp(50px,6vw,88px)]', rot: 18, dur: '8.1s', delay: '1.7s' },
 ]
 
-const featured = ['pepperoni', 'supreme', 'veggie'].map((id) => menu.find((m) => m.id === id))
+// One from three different sections, on purpose: the hero is all pizza, so the
+// first row below it is where the rest of the counter announces itself.
+const featured = ['pepperoni', 'smash-classic', 'falafel-wrap'].map((id) =>
+  menu.find((m) => m.id === id),
+)
 
 export default function Home() {
   return (
@@ -55,15 +60,37 @@ export default function Home() {
         </span>
       </section>
 
-      {/* Featured */}
+      {/* The counter, section by section */}
       <section className="mx-auto w-full max-w-6xl px-6 pt-24 sm:px-10">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-[var(--ink-soft)]">
+              The counter
+            </span>
+            <h2 className="font-display mt-4 max-w-xl text-[clamp(1.9rem,4vw,2.8rem)] font-semibold leading-tight tracking-tight text-[var(--ink)]">
+              It is not only <em className="italic text-[var(--accent)]">pizza</em> back there
+            </h2>
+          </div>
+          <p className="max-w-xs text-[14px] leading-relaxed text-[var(--ink-soft)]">
+            The deck oven runs the pizza. Everything else comes off the flat top, out of the
+            fryer, or straight from the cold bench.
+          </p>
+        </div>
+
+        <div className="mt-12">
+          <CategoryTiles />
+        </div>
+      </section>
+
+      {/* Featured */}
+      <section className="mx-auto w-full max-w-6xl px-6 pt-28 sm:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <span className="text-[11px] font-medium uppercase tracking-[0.3em] text-[var(--ink-soft)]">
               Off the board
             </span>
             <h2 className="font-display mt-4 max-w-lg text-[clamp(1.9rem,4vw,2.8rem)] font-semibold leading-tight tracking-tight text-[var(--ink)]">
-              The three that leave the oven <em className="italic text-[var(--accent)]">fastest</em>
+              The three that go out <em className="italic text-[var(--accent)]">fastest</em>
             </h2>
           </div>
           <Link
@@ -75,8 +102,8 @@ export default function Home() {
         </div>
 
         <div className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-3">
-          {featured.map((item) => (
-            <ItemCard key={item.id} item={item} />
+          {featured.map((item, i) => (
+            <ItemCard key={item.id} item={item} index={i} showCategory />
           ))}
         </div>
       </section>

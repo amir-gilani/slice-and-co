@@ -335,3 +335,338 @@ body {
     animation: none;
   }
 }
+
+
+/* ---------------------------------------------------------------
+   The counter — sections, cards and the tinted placeholders
+   ---------------------------------------------------------------
+   Every section in data.js carries a --tint. Anything that belongs to a
+   section sets that tint as a local custom property and the rules below wash
+   it through borders, glows and backgrounds at low percentages. Nothing here
+   uses the tint at full strength: the palette stays white and --accent stays
+   the only loud colour on the page.
+   --------------------------------------------------------------- */
+
+/* Frame around a real photo — a whisper of the section tint behind the
+   cut-out, so a photographed item and a placeholder sit at the same weight. */
+.image-frame {
+  background: color-mix(in srgb, var(--tint, var(--crust)) 7%, var(--card));
+  padding: 0.75rem;
+}
+
+/* …and the placeholder that stands in until the photo exists. Sized in
+   container units, so the same markup gives a 200px glyph on the detail page
+   and a 30px one on a cart thumbnail without a single breakpoint. */
+.image-slot {
+  container-type: size;
+  border: 1px solid color-mix(in srgb, var(--tint) 20%, var(--line));
+  background:
+    radial-gradient(
+      120% 120% at 50% 0%,
+      color-mix(in srgb, var(--tint) 15%, var(--card)) 0%,
+      color-mix(in srgb, var(--tint) 5%, var(--card)) 58%,
+      var(--card) 100%
+    );
+}
+
+/* A soft disc under the glyph, so it reads as lit rather than pasted on. */
+.image-slot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 68cqmin;
+  height: 68cqmin;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--tint) 16%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+.image-slot-glyph {
+  position: relative;
+  z-index: 1;
+  font-size: 40cqmin;
+  line-height: 1;
+  transform: rotate(-6deg);
+  filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--tint) 32%, transparent));
+}
+
+/* Card hover: the photo grows inside the frame (a utility on the child), the
+   frame picks up a tinted shadow, and nothing moves the text. */
+.item-card-frame {
+  position: relative;
+  transition: box-shadow 350ms ease;
+}
+
+.item-card:hover .item-card-frame,
+.group:hover .item-card-frame {
+  box-shadow: 0 20px 44px -26px color-mix(in srgb, var(--tint, var(--ink)) 65%, transparent);
+}
+
+/* The section badge — on a card corner, or beside a title on the item page. */
+.section-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--tint) 26%, transparent);
+  background: color-mix(in srgb, var(--tint) 13%, var(--card));
+  padding: 0.35rem 0.7rem;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--tint) 55%, var(--ink));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* the emoji inside a chip needs to come back up to a readable size */
+.section-chip span {
+  font-size: 12px;
+  letter-spacing: normal;
+}
+
+.section-chip.is-link {
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.section-chip.is-link:hover {
+  background: color-mix(in srgb, var(--tint) 20%, var(--card));
+  border-color: color-mix(in srgb, var(--tint) 40%, transparent);
+}
+
+/* A section's heading glyph, on the menu board. */
+.section-head-glyph {
+  font-size: 0.9em;
+  filter: drop-shadow(0 4px 10px color-mix(in srgb, var(--tint) 40%, transparent));
+}
+
+
+/* --- the sticky section rail on the menu ------------------------------ */
+.menu-rail {
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+}
+
+/* the rail scrolls sideways on a phone; the site hides scrollbars everywhere
+   else, so it hides this one too */
+.rail-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rail-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tight on purpose: nine of these plus the search box share one line, so every
+   spare pixel of padding is what decides whether the row fits or has to be
+   swiped. */
+.cat-chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 0.5rem 0.72rem;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease,
+    transform 200ms ease;
+}
+
+.cat-chip:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--tint, var(--ink-soft)) 45%, var(--line));
+}
+
+.cat-chip:active {
+  transform: scale(0.96);
+}
+
+.cat-chip.is-active {
+  color: color-mix(in srgb, var(--tint, var(--accent)) 65%, var(--ink));
+  border-color: color-mix(in srgb, var(--tint, var(--accent)) 50%, transparent);
+  background: color-mix(in srgb, var(--tint, var(--accent)) 10%, var(--card));
+}
+
+.cat-chip:focus-visible,
+.cat-tile:focus-visible,
+.option-tile:focus-visible,
+.extra-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.search-field {
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 0.5rem 0.95rem;
+  color: var(--ink-soft);
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.search-field:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  color: var(--ink);
+}
+
+.search-field input {
+  color: var(--ink);
+}
+
+
+/* --- the section tiles on the home page ------------------------------- */
+.cat-tile {
+  position: relative;
+  display: flex;
+  min-height: 172px;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid var(--line);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--tint) 10%, var(--card)) 0%,
+    var(--card) 62%
+  );
+  padding: 1.15rem 1.2rem 1.25rem;
+  transition:
+    transform 350ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 350ms ease,
+    box-shadow 350ms ease;
+}
+
+.cat-tile:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--tint) 45%, var(--line));
+  box-shadow: 0 24px 46px -28px color-mix(in srgb, var(--tint) 70%, transparent);
+}
+
+.cat-tile-glyph {
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(0 6px 12px color-mix(in srgb, var(--tint) 38%, transparent));
+  transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cat-tile:hover .cat-tile-glyph {
+  transform: translateY(-2px) scale(1.1) rotate(-7deg);
+}
+
+
+/* --- the builder controls on an item page ----------------------------- */
+.option-tile {
+  cursor: pointer;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    transform 200ms ease;
+}
+
+.option-tile:hover {
+  border-color: var(--ink-soft);
+}
+
+.option-tile:active {
+  transform: scale(0.98);
+}
+
+.option-tile.is-active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+.extra-row {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 13px;
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.extra-row:hover {
+  border-color: var(--ink-soft);
+}
+
+.extra-row.is-on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+.extra-box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--line);
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.extra-box.is-on {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+
+/* --- arrival ---------------------------------------------------------- */
+/* Cards and tiles rise in as they mount. The stagger is capped at eight steps
+   so a thirty-item board finishes arriving in under half a second instead of
+   dribbling in row by row. */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  animation: reveal-rise 520ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  animation-delay: calc(min(var(--i, 0), 8) * 45ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+  }
+
+  .cat-tile:hover {
+    transform: none;
+  }
+
+  .cat-tile,
+  .cat-tile-glyph,
+  .item-card-frame {
+    transition: none;
+  }
+}

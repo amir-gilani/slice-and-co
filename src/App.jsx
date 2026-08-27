@@ -6,9 +6,9 @@ import About from './pages/About'
 import Cart from './pages/Cart'
 import Contact from './pages/Contact'
 import Home from './pages/Home'
+import ItemDetail from './pages/ItemDetail'
 import Menu from './pages/Menu'
 import NotFound from './pages/NotFound'
-import PizzaDetail from './pages/PizzaDetail'
 
 export default function App() {
   const { pathname } = useLocation()
@@ -26,7 +26,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />
-        <Route path="/menu/:id" element={<PizzaDetail />} />
+        <Route path="/menu/:id" element={<ItemDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
