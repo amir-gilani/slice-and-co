@@ -65,14 +65,6 @@ body,
   overscroll-behavior: none;
 }
 
-/* The hero is a fixed, full-screen composition, so it — and only it — locks
-   scrolling. App sets the flag from the route. */
-html[data-lock='on'],
-html[data-lock='on'] body,
-html[data-lock='on'] #root {
-  height: 100%;
-  overflow: hidden;
-}
 
 body {
   background: var(--bg);
@@ -81,47 +73,66 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.stage,
-.card {
+.stage {
   position: relative;
   min-height: 100dvh;
-  /* Still white edge to edge, but not a dead flat white: a warm oven glow
-     rises from behind the pie, a faint crust-gold wash sits under the nav,
-     and a wide soft vignette pulls the corners down just enough to seat the
-     pie in the middle of the frame rather than have it float on a blank
-     sheet. Every layer stays under 12% alpha, so the page still reads white. */
-  background:
-    radial-gradient(115% 62% at 50% 112%, rgba(224, 67, 44, 0.11) 0%, rgba(224, 67, 44, 0.045) 42%, rgba(224, 67, 44, 0) 72%),
-    radial-gradient(90% 45% at 50% -12%, rgba(219, 160, 62, 0.1) 0%, rgba(219, 160, 62, 0) 65%),
-    radial-gradient(105% 85% at 50% 42%, rgba(255, 255, 255, 0) 52%, rgba(36, 27, 23, 0.05) 100%),
-    var(--bg);
-  background-attachment: fixed;
-}
-
-html[data-lock='on'] .stage {
-  height: 100dvh;
-  max-height: 100dvh;
-}
-
-/* The glow and vignette are composed for the hero's viewport-sized frame; on a
-   long scrolling page they would stretch, so those pages get a plain ground and
-   let the section rules carry the structure. */
-html[data-lock='off'] .stage {
   background: var(--bg);
 }
 
-/* A fine grain over the whole stage — an inline SVG turbulence, no asset
-   fetched. At 3.5% it never reads as texture, it just stops large flat areas
-   from banding and gives the white some tooth. */
-.stage::after {
-  content: "";
+/* The hero's warm ground is composed for a viewport-sized frame, so it lives on
+   the hero band rather than the page: an oven glow rising from behind the pie,
+   a crust-gold wash under the nav, and a wide vignette seating the pie in the
+   middle of the frame. Every layer stays under 12% alpha, so it reads white.
+
+   It sits on a negative-z pseudo-element rather than on the section itself for
+   one reason: that lets it carry a mask that fades the ground out before the
+   bottom edge, so the band dissolves into the page instead of ending on a hard
+   line where the next section starts. Negative z paints above the page
+   background but below the hero's own content, so the pie stays untouched. */
+.hero-band::before,
+.hero-band::after {
+  content: '';
   position: absolute;
   inset: 0;
+  z-index: -1;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+.hero-band::before {
+  background:
+    radial-gradient(115% 62% at 50% 112%, rgba(224, 67, 44, 0.11) 0%, rgba(224, 67, 44, 0.045) 42%, rgba(224, 67, 44, 0) 72%),
+    radial-gradient(90% 45% at 50% -12%, rgba(219, 160, 62, 0.1) 0%, rgba(219, 160, 62, 0) 65%),
+    radial-gradient(105% 85% at 50% 42%, rgba(255, 255, 255, 0) 52%, rgba(36, 27, 23, 0.05) 100%);
+}
+
+/* A fine grain over the hero — an inline SVG turbulence, no asset fetched. At
+   3.5% it never reads as texture; it just stops the large flat areas from
+   banding and gives the white some tooth. */
+.hero-band::after {
   opacity: 0.035;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* the cue under the hero — a line that keeps drawing itself downward */
+.scroll-cue {
+  animation: cue 2.6s ease-in-out infinite;
+}
+
+@keyframes cue {
+  0%,
+  100% {
+    transform: scaleX(0.35);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
 
 /* ---------------------------------------------------------------
    The pizza itself — crust / sauce / cheese are pure radial gradients

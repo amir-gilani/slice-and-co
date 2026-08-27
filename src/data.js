@@ -230,3 +230,24 @@ export const menu = [
 ]
 
 export const findItem = (id) => menu.find((m) => m.id === id)
+
+export const reviews = [
+  {
+    name: 'Marta L.',
+    meta: 'Old Town, twice a week',
+    stars: 5,
+    quote: 'The rim is the best thing on the menu and it is not even a topping.',
+  },
+  {
+    name: 'Deniz A.',
+    meta: 'First visit',
+    stars: 5,
+    quote: 'Ordered at 7:12, eating at 7:41. Still too hot to hold.',
+  },
+  {
+    name: 'Sam R.',
+    meta: 'Riverside regular',
+    stars: 4,
+    quote: 'They run out of dough by nine on Fridays. Go early, that is the whole review.',
+  },
+]

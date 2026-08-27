@@ -10,32 +10,17 @@ import Menu from './pages/Menu'
 import NotFound from './pages/NotFound'
 import PizzaDetail from './pages/PizzaDetail'
 
-// The hero is a fixed, full-screen composition; every other page is a normal
-// scrolling document. The flag on <html> lets the stylesheet lock scrolling for
-// the first case only.
-function useHomeLock(isHome) {
-  useEffect(() => {
-    document.documentElement.dataset.lock = isHome ? 'on' : 'off'
-  }, [isHome])
-}
+export default function App() {
+  const { pathname } = useLocation()
 
-// Landing on a new route should start at the top, not wherever the last one
-// was scrolled to.
-function useScrollReset(pathname) {
+  // Landing on a new route should start at the top, not wherever the last one
+  // was scrolled to.
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
-}
-
-export default function App() {
-  const { pathname } = useLocation()
-  const isHome = pathname === '/'
-
-  useHomeLock(isHome)
-  useScrollReset(pathname)
 
   return (
-    <div className={`stage flex w-full flex-col ${isHome ? 'h-dvh overflow-hidden' : 'min-h-dvh'}`}>
+    <div className="stage flex min-h-dvh w-full flex-col">
       <Nav />
 
       <Routes>
@@ -48,7 +33,7 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {!isHome && <Footer />}
+      <Footer />
     </div>
   )
 }
