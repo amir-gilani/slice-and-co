@@ -65,6 +65,20 @@ body,
   overscroll-behavior: none;
 }
 
+/* No scrollbar down the right edge — the page still scrolls by wheel, touch,
+   keyboard and the scroll cue tells you it does. Firefox and the WebKit/Blink
+   engines need different switches, so both are set. */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 
 body {
   background: var(--bg);
