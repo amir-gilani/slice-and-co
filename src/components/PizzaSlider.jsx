@@ -13,10 +13,13 @@ const RING_STEP = 33
 
 const angleOf = (i) => (i - (pizzas.length - 1) / 2) * RING_STEP
 
+// Each size nudges the pie itself a little. The steps are tiny on purpose:
+// enough that choosing Large feels like it changed something real, small
+// enough that the crust never reaches the ring.
 const SIZES = [
-  { id: 's', label: 'Small', inches: '10\"', delta: -3 },
-  { id: 'm', label: 'Medium', inches: '12\"', delta: 0 },
-  { id: 'l', label: 'Large', inches: '14\"', delta: 4 },
+  { id: 's', label: 'Small', inches: '10\"', delta: -3, scale: 0.955 },
+  { id: 'm', label: 'Medium', inches: '12\"', delta: 0, scale: 1 },
+  { id: 'l', label: 'Large', inches: '14\"', delta: 4, scale: 1.045 },
 ]
 
 export default function PizzaSlider() {
@@ -220,7 +223,7 @@ export default function PizzaSlider() {
             ))}
           </svg>
 
-          <div className="pizza-crop">
+          <div className="pizza-crop" style={{ '--size-scale': activeSize.scale }}>
             <Pizza ref={currentRef} key={`slide-${current}`} pizza={pizza} className="active" />
             {incoming && (
               <Pizza
