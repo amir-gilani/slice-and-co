@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom'
 import CategoryTiles from '../components/CategoryTiles'
 import ItemCard from '../components/ItemCard'
 import PizzaSlider from '../components/PizzaSlider'
+import Reviews from '../components/Reviews'
 import StatStrip from '../components/StatStrip'
-import { menu, reviews } from '../data'
+import { menu } from '../data'
 import basil from '../assets/basil.webp'
 import pepper from '../assets/pepper.webp'
 import pineapple from '../assets/pineapple.webp'
@@ -131,28 +132,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Reviews */}
-      <section className="mx-auto w-full max-w-6xl px-6 pt-28 sm:px-10">
-        <h2 className="font-display text-[clamp(1.9rem,4vw,2.8rem)] font-semibold leading-tight tracking-tight text-[var(--ink)]">
-          What the queue says
-        </h2>
-
-        <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-3">
-          {reviews.map((r) => (
-            <figure key={r.name} className="border-t border-[var(--line)] pt-6">
-              <div aria-hidden="true" className="text-[13px] tracking-[0.3em] text-[var(--accent)]">
-                {'★'.repeat(r.stars)}
-              </div>
-              <blockquote className="mt-4 font-display text-[17px] leading-snug tracking-tight text-[var(--ink)]">
-                “{r.quote}”
-              </blockquote>
-              <figcaption className="mt-4 text-[12px] text-[var(--ink-soft)]">
-                {r.name} · {r.meta}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
+      <Reviews />
 
       {/* Closing CTA */}
       <section className="mx-auto w-full max-w-6xl px-6 py-28 sm:px-10">

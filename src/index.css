@@ -670,3 +670,75 @@ body {
     transition: none;
   }
 }
+
+/* ---------------------------------------------------------------
+   Reviews — cards tinted by the section of the item being praised
+   --------------------------------------------------------------- */
+.review-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.25rem;
+  border: 1px solid var(--line);
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--tint, var(--crust)) 7%, var(--card)) 0%,
+    var(--card) 58%
+  );
+  padding: 1.35rem 1.45rem 1.3rem;
+  transition:
+    transform 350ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 350ms ease,
+    box-shadow 350ms ease;
+}
+
+.review-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--tint, var(--ink)) 28%, var(--line));
+  box-shadow: 0 22px 44px -30px color-mix(in srgb, var(--tint, var(--ink)) 70%, transparent);
+}
+
+.review-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--tint, var(--ink)) 24%, transparent);
+  background: color-mix(in srgb, var(--tint, var(--ink)) 14%, var(--card));
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--tint, var(--ink)) 55%, var(--ink));
+}
+
+/* Two stacked rows of the same five glyphs: the lower one is the empty state,
+   the upper is clipped to --fill so a fractional rating reads honestly. */
+.stars {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  white-space: nowrap;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  color: color-mix(in srgb, var(--ink) 17%, transparent);
+}
+
+.stars-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--fill, 0%);
+  overflow: hidden;
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-card {
+    transition: none;
+  }
+  .review-card:hover {
+    transform: none;
+  }
+}

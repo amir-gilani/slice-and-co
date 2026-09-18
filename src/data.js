@@ -1,7 +1,42 @@
+import burrata from './assets/burrata.webp'
+import chickenBurger from './assets/chicken-burger.webp'
+import chickenShawarma from './assets/chicken-shawarma.webp'
+import chinotto from './assets/chinotto.webp'
+import craftCola from './assets/craft-cola.webp'
+import diavola from './assets/diavola.webp'
+import dipTrio from './assets/dip-trio.webp'
+import doubleSmash from './assets/double-smash.webp'
+import espresso from './assets/espresso.webp'
+import falafelPlate from './assets/falafel-plate.webp'
+import falafelWrap from './assets/falafel-wrap.webp'
+import fries from './assets/fries.webp'
+import funghi from './assets/funghi.webp'
+import garlicBread from './assets/garlic-bread.webp'
+import gelato from './assets/gelato.webp'
+import gemCaesar from './assets/gem-caesar.webp'
+import halloumiBurger from './assets/halloumi-burger.webp'
+import halloumiWrap from './assets/halloumi-wrap.webp'
 import hawaiian from './assets/hawaiian.webp'
+import hummus from './assets/hummus.webp'
+import lemonade from './assets/lemonade.webp'
+import loadedFries from './assets/loaded-fries.webp'
+import margherita from './assets/margherita.webp'
+import mintYoghurt from './assets/mint-yoghurt.webp'
+import mozzarellaSticks from './assets/mozzarella-sticks.webp'
+import nutellaBites from './assets/nutella-bites.webp'
+import olives from './assets/olives.webp'
+import onionRings from './assets/onion-rings.webp'
+import peachTea from './assets/peach-tea.webp'
 import pepperoni from './assets/pepperoni.webp'
+import popcornChicken from './assets/popcorn-chicken.webp'
+import quattro from './assets/quattro.webp'
+import slaw from './assets/slaw.webp'
+import smashClassic from './assets/smash-classic.webp'
 import supreme from './assets/supreme.webp'
+import tabbouleh from './assets/tabbouleh.webp'
+import tiramisu from './assets/tiramisu.webp'
 import veggie from './assets/veggie.webp'
+import wings from './assets/wings.webp'
 
 /**
  * The four pies with photography. These drive the hero slider, so they always
@@ -192,6 +227,7 @@ export const menu = [
     price: 13,
     kcal: 220,
     time: '10 min',
+    image: margherita,
     blurb: 'San Marzano, fior di latte, basil, olive oil.',
     description:
       'Four ingredients with nowhere to hide. Tomatoes crushed by hand that morning, mozzarella torn rather than sliced, basil and a thread of oil after the bake.',
@@ -205,6 +241,7 @@ export const menu = [
     price: 17,
     kcal: 295,
     time: '12 min',
+    image: diavola,
     blurb: 'Nduja, chilli honey, red onion, oregano.',
     description:
       'Calabrian nduja that melts into the sauce, cut with a drizzle of chilli honey once it is out of the oven. Hot, but the sweetness keeps it civil.',
@@ -218,6 +255,7 @@ export const menu = [
     price: 18,
     kcal: 330,
     time: '11 min',
+    image: quattro,
     blurb: 'Mozzarella, gorgonzola, pecorino, taleggio.',
     description:
       'No tomato — a white base of four cheeses, each doing a different job. Taleggio for the melt, gorgonzola for the edge, pecorino for salt, mozzarella to hold it together.',
@@ -231,6 +269,7 @@ export const menu = [
     price: 18,
     kcal: 275,
     time: '13 min',
+    image: funghi,
     blurb: 'Wild mushroom, taleggio, thyme, truffle oil.',
     description:
       'Wild mushrooms roasted separately so they colour instead of sweat, over taleggio and thyme, with truffle oil brushed on at the pass.',
@@ -246,6 +285,7 @@ export const menu = [
     price: 12,
     kcal: 620,
     time: '9 min',
+    image: smashClassic,
     blurb: 'Single smashed patty, American cheese, pickle, house sauce.',
     description:
       'Ninety grams of chuck and brisket pressed flat on a screaming flat top, so the whole underside turns to crust. Cheese goes on while it is still moving, then pickles, house sauce, and a potato bun that gives up immediately.',
@@ -259,6 +299,7 @@ export const menu = [
     price: 16,
     kcal: 910,
     time: '10 min',
+    image: doubleSmash,
     blurb: 'Two patties, double cheese, caramelised onion.',
     description:
       'The Classic with the volume up: two patties with two slices of cheese between them so the middle fuses, and onions cooked down in the beef fat until they are nearly jam.',
@@ -272,6 +313,7 @@ export const menu = [
     price: 13,
     kcal: 740,
     time: '12 min',
+    image: chickenBurger,
     blurb: 'Overnight buttermilk thigh, slaw, pickled chilli.',
     description:
       'Boned thigh sat in buttermilk overnight, dredged twice and fried until the coating shatters. Cold slaw underneath to keep it from turning heavy, pickled green chilli over the top.',
@@ -285,6 +327,7 @@ export const menu = [
     price: 12,
     kcal: 580,
     time: '9 min',
+    image: halloumiBurger,
     blurb: 'Griddled halloumi, rose harissa, mint yoghurt.',
     description:
       'Thick-cut halloumi griddled until it squeaks and blisters, rose harissa for the heat, mint yoghurt to put it out again. The vegetarian one nobody orders reluctantly.',
@@ -300,6 +343,7 @@ export const menu = [
     price: 5,
     kcal: 380,
     time: '6 min',
+    image: fries,
     blurb: 'Twice-fried, rosemary salt, skin on.',
     description:
       'Cut in the morning, blanched at 140 and finished at 180, so the outside goes glassy while the middle stays fluffy. Tossed in rosemary salt the second they come out.',
@@ -313,6 +357,7 @@ export const menu = [
     price: 8,
     kcal: 620,
     time: '8 min',
+    image: loadedFries,
     blurb: 'Beef chilli, molten cheese, jalapeño, sour cream.',
     description:
       'A full portion of fries buried under beef chilli and cheese sauce, then pickled jalapeño and sour cream. It comes with a fork because it has to.',
@@ -326,6 +371,7 @@ export const menu = [
     price: 6,
     kcal: 410,
     time: '7 min',
+    image: onionRings,
     blurb: 'Thick-cut sweet onion, ice-cold batter.',
     description:
       'Sweet onion cut a centimetre thick and dropped through a batter kept ice-cold, which is the whole trick — the shock is what lifts the crust away from the ring.',
@@ -339,6 +385,7 @@ export const menu = [
     price: 7,
     kcal: 450,
     time: '7 min',
+    image: mozzarellaSticks,
     blurb: 'Panko crust, low-moisture mozzarella, marinara.',
     description:
       'Breaded twice and frozen hard before they go in, so the crust sets before the cheese surrenders. Marinara on the side, from the same tomatoes as the pizza sauce.',
@@ -352,6 +399,7 @@ export const menu = [
     price: 7,
     kcal: 480,
     time: '8 min',
+    image: popcornChicken,
     blurb: 'Thigh nuggets, cajun dust, garlic mayo.',
     description:
       'Thigh rather than breast, cut small and craggy so there is more surface to crisp. Dusted with cajun as it drains, garlic mayo to dip.',
@@ -365,6 +413,7 @@ export const menu = [
     price: 8,
     kcal: 320,
     time: '14 min',
+    image: wings,
     blurb: 'Oven-roasted, chilli honey, lime.',
     description:
       'Roasted hard in the deck oven until the skin goes glassy, then tossed in the same chilli honey that finishes the Diavola.',
@@ -380,6 +429,7 @@ export const menu = [
     price: 9,
     kcal: 540,
     time: '8 min',
+    image: falafelWrap,
     blurb: 'Six falafel, tahini, pickled turnip, herbs.',
     description:
       'Chickpeas soaked overnight and never boiled — that is the difference between a falafel that stays light and one that goes to paste. Rolled to order, fried dark, wrapped hot with tahini and enough herbs to count as a salad.',
@@ -393,6 +443,7 @@ export const menu = [
     price: 11,
     kcal: 610,
     time: '10 min',
+    image: falafelPlate,
     blurb: 'Eight falafel, hummus, salad, warm pita.',
     description:
       'The wrap taken apart and laid out properly: eight falafel around a pool of hummus, chopped salad, pickles, and pita warmed on the pizza deck.',
@@ -406,6 +457,7 @@ export const menu = [
     price: 10,
     kcal: 570,
     time: '8 min',
+    image: halloumiWrap,
     blurb: 'Griddled halloumi, zhoug, tomato, mint.',
     description:
       'Halloumi off the griddle while it is still squeaking, green zhoug down the middle, tomato and mint to keep it fresh. Salty, sharp, gone in four bites.',
@@ -419,6 +471,7 @@ export const menu = [
     price: 11,
     kcal: 650,
     time: '9 min',
+    image: chickenShawarma,
     blurb: 'Marinated thigh, garlic sauce, chilli, fries inside.',
     description:
       'Thigh marinated a day in seven spices, carved off the vertical grill and wrapped with garlic sauce, chilli, and — because that is how it should be — a few fries tucked in with it.',
@@ -434,6 +487,7 @@ export const menu = [
     price: 9,
     kcal: 210,
     time: '5 min',
+    image: burrata,
     blurb: 'Whole burrata, heritage tomato, basil oil.',
     description:
       'A whole burrata on heritage tomatoes with basil oil and cracked pepper. Cold, and meant to arrive before the pizza does.',
@@ -447,6 +501,7 @@ export const menu = [
     price: 6,
     kcal: 290,
     time: '4 min',
+    image: hummus,
     blurb: 'Whipped chickpea, tahini, olive oil, sumac.',
     description:
       'Whipped long enough to go silky, pooled with green olive oil and dusted with sumac. The pita comes off the pizza deck, so it lands warm against the cold hummus.',
@@ -460,6 +515,7 @@ export const menu = [
     price: 7,
     kcal: 180,
     time: '4 min',
+    image: tabbouleh,
     blurb: 'More parsley than bulgur, lemon, tomato.',
     description:
       'Parsley first and bulgur second, the way it is supposed to be — chopped fine, and dressed only once it is ordered so it never sits and wilts.',
@@ -473,6 +529,7 @@ export const menu = [
     price: 8,
     kcal: 260,
     time: '5 min',
+    image: gemCaesar,
     blurb: 'Cold gem hearts, anchovy dressing, pecorino.',
     description:
       'Gem hearts kept on ice until they are dressed, so every leaf comes up cold and rigid. Anchovy dressing, pecorino shaved thin, croutons cut from yesterday’s dough.',
@@ -488,6 +545,7 @@ export const menu = [
     price: 6,
     kcal: 180,
     time: '8 min',
+    image: garlicBread,
     blurb: 'Same dough, garlic butter, sea salt.',
     description:
       'Offcuts of the same 48-hour dough, baked in the pizza oven and brushed with garlic butter as they come out.',
@@ -501,6 +559,7 @@ export const menu = [
     price: 4,
     kcal: 140,
     time: '2 min',
+    image: olives,
     blurb: 'Nocellara, orange peel, fennel seed.',
     description:
       'Bright green Nocellara left a week in oil with orange peel, fennel seed and a bay leaf. Something to pick at while the oven does its work.',
@@ -514,6 +573,7 @@ export const menu = [
     price: 4,
     kcal: 160,
     time: '3 min',
+    image: slaw,
     blurb: 'White cabbage, buttermilk, celery seed.',
     description:
       'Cut thin on a mandolin and dressed late, so it stays crunchy. Celery seed does most of the talking.',
@@ -527,6 +587,7 @@ export const menu = [
     price: 5,
     kcal: 210,
     time: '2 min',
+    image: dipTrio,
     blurb: 'Garlic mayo, chilli honey, blue cheese.',
     description:
       'The three that go with everything else on this board, in three little pots. Order it with the fries and stop pretending you will share.',
@@ -542,6 +603,7 @@ export const menu = [
     price: 4,
     kcal: 90,
     time: '2 min',
+    image: lemonade,
     blurb: 'Pressed lemon, mint, soda.',
     description: 'Lemons pressed each morning, mint bruised to order, topped with soda over ice.',
     ingredients: ['Sicilian lemon', 'Mint', 'Cane sugar', 'Soda'],
@@ -554,6 +616,7 @@ export const menu = [
     price: 4,
     kcal: 70,
     time: '1 min',
+    image: chinotto,
     blurb: 'Bitter orange, glass bottle, very cold.',
     description: 'The bitter one. Served in the bottle, straight from the bottom of the fridge.',
     ingredients: ['Chinotto orange', 'Cane sugar'],
@@ -566,6 +629,7 @@ export const menu = [
     price: 4,
     kcal: 130,
     time: '1 min',
+    image: craftCola,
     blurb: 'Cane sugar, real spice, glass bottle.',
     description:
       'Made forty miles away with cane sugar and actual cassia and citrus peel. Tastes like cola did before it was optimised.',
@@ -579,6 +643,7 @@ export const menu = [
     price: 4,
     kcal: 110,
     time: '2 min',
+    image: mintYoghurt,
     blurb: 'Salted yoghurt, dried mint, sparkling water.',
     description:
       'Salty, fizzy and faintly sour — the one thing that properly puts out the harissa burger or the spiced chicken wrap. Trust the kitchen on this.',
@@ -592,6 +657,7 @@ export const menu = [
     price: 4,
     kcal: 80,
     time: '2 min',
+    image: peachTea,
     blurb: 'Cold-brewed black tea, white peach, lemon.',
     description:
       'Black tea cold-brewed overnight so it never turns bitter, sweetened with white peach and sharpened with lemon.',
@@ -605,6 +671,7 @@ export const menu = [
     price: 3,
     kcal: 5,
     time: '1 min',
+    image: espresso,
     blurb: 'Dark roast, double shot, small cup.',
     description: 'Double, dark, and served after the plates go. No, there is no oat milk version.',
     ingredients: ['Espresso blend'],
@@ -619,6 +686,7 @@ export const menu = [
     price: 7,
     kcal: 420,
     time: '3 min',
+    image: tiramisu,
     blurb: 'Mascarpone, savoiardi, a lot of espresso.',
     description:
       'Made in a tray each morning and scooped rather than sliced, which is the honest way to serve it. Heavy on the espresso, light on the sugar.',
@@ -632,6 +700,7 @@ export const menu = [
     price: 6,
     kcal: 460,
     time: '7 min',
+    image: nutellaBites,
     blurb: 'Pizza dough, fried, chocolate hazelnut, icing sugar.',
     description:
       'The same dough again, torn into knuckles and fried instead of baked, rolled in sugar and served with warm chocolate hazelnut to dunk them in.',
@@ -645,6 +714,7 @@ export const menu = [
     price: 5,
     kcal: 280,
     time: '2 min',
+    image: gelato,
     blurb: 'Bronte pistachio, two scoops, cold.',
     description:
       'Bronte pistachio and not much else — green because of the nut, not because of a bottle.',
@@ -865,23 +935,55 @@ export const builders = {
 
 export const builderFor = (categoryId) => builders[categoryId] ?? builders.sides
 
+/**
+ * The featured reviews — the six the site shows, not the whole book. Each one
+ * names the thing it is about, so the section doubles as a way into the menu
+ * and stops reading like it is still a pizza-only shop.
+ */
 export const reviews = [
   {
     name: 'Marta L.',
     meta: 'Old Town, twice a week',
     stars: 5,
+    item: 'pepperoni',
     quote: 'The rim is the best thing on the menu and it is not even a topping.',
   },
   {
     name: 'Deniz A.',
     meta: 'First visit',
     stars: 5,
+    item: 'smash-classic',
     quote: 'Ordered at 7:12, eating at 7:41. Still too hot to hold.',
   },
   {
     name: 'Sam R.',
     meta: 'Riverside regular',
     stars: 4,
+    item: 'margherita',
     quote: 'They run out of dough by nine on Fridays. Go early, that is the whole review.',
   },
+  {
+    name: 'Yara K.',
+    meta: 'Vegetarian, sceptical',
+    stars: 5,
+    item: 'falafel-wrap',
+    quote: 'I have had falafel you could patch a wall with. This is not that.',
+  },
+  {
+    name: 'Tom B.',
+    meta: 'Friday five-a-side',
+    stars: 4,
+    item: 'loaded-fries',
+    quote: 'We get these for the table and then nobody speaks for four minutes.',
+  },
+  {
+    name: 'Priya N.',
+    meta: 'Works two streets away',
+    stars: 5,
+    item: 'mint-yoghurt',
+    quote: 'Ordered it because the counter insisted. Now I order the harissa burger just to have an excuse.',
+  },
 ]
+
+/** The running total on the door, not the length of the array above. */
+export const reviewCount = 312

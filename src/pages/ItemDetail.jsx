@@ -108,22 +108,11 @@ function Builder({ item }) {
             rounded="rounded-3xl"
           />
 
-          {/* The supporting shots only make sense once there is a hero photo to
-              support — three empty frames under a placeholder is just noise. */}
-          {item.image && (
-            <div className="mt-4 grid grid-cols-3 gap-4">
-              {['detail', 'in the oven', 'on the table'].map((l) => (
-                <ImageSlot
-                  key={l}
-                  ratio="1/1"
-                  label={`${item.name}, ${l}`}
-                  icon={cat?.icon}
-                  tint={cat?.tint}
-                  rounded="rounded-xl"
-                />
-              ))}
-            </div>
-          )}
+          {/* There was a row of three supporting frames here — detail, in the
+              oven, on the table. Every item has its hero shot now and none has
+              a second one, so all it did was print three empty tiles under a
+              real photo on all thirty-nine pages. It comes back the day there
+              are actual gallery shots to put in it. */}
         </div>
 
         {/* Builder side */}
