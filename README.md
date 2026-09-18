@@ -1,3 +1,4 @@
+
 <div align="center">
 
 # Slice&Co
@@ -16,8 +17,7 @@ A multi-page restaurant site with a photo-driven hero slider, a 39-item menu, an
 ![Slice&Co home page](docs/preview.png)
 
 ## Demo
-
-<!-- Add your GIF at docs/demo.gif and it will show up here. -->
+<img width="800" height="361" alt="IMG_7352-ezgif com-video-to-gif-converter (14)" src="https://github.com/user-attachments/assets/d2bcc8b0-101d-4ac4-8eb5-25dcb61195f6" />
 ![Slice&Co demo](docs/demo.gif)
 
 ## Highlights
